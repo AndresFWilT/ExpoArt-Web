@@ -3,9 +3,9 @@ import psycopg2
 from components.dataBases.Connection import Connection
 from components.dataBases.strategy.QueryExecution import QueryExecution
 
-class QueryExecutionSaveArtist(QueryExecution):
+class QueryExecutionArtist(QueryExecution):
     # global
-    __data = {}
+    __data = []
 
     """
     Concrete Strategy that implements the algorithms to save an artist
@@ -15,20 +15,24 @@ class QueryExecutionSaveArtist(QueryExecution):
         """
         Method that saves data into the DB
         """
-        # getting the data from the template
+        # getting the data, in lists from the template
         self.data = data
-        # try catch, it it's an error with the query or with the connection
+        # try catch, if it's an error with the query or with the connection
         try:
             # connecting DB
             conn = self.__get_connection()
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT version()')
-            # displaying the select
-            db_version = cur.fetchone()
+            cur.execute(f"""INSERT INTO artist (name_artist,lastname_artist,email_artist,phone)
+             VALUES ('{data[0]}','{data[1]}','{data[2]}',{data[3]})""")
+            # saving
+            conn.commit()
+            # closing cursor
             cur.close()
-            return db_version
+            # closing connection
+            conn.close()
+            return "Artista guardado con exito"
         except psycopg2.Error as error:
             print("something happened..."+error)
             return "Algo paso y no se puso realizar la transaccion.."
@@ -39,7 +43,7 @@ class QueryExecutionSaveArtist(QueryExecution):
         """
         # getting the data from the template
         self.data = data
-        # try catch, it it's an error with the query or with the connection
+        # try catch, if it's an error with the query or with the connection
         try:
             # connecting DB
             conn = self.__get_connection()

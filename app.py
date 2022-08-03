@@ -39,9 +39,7 @@ def add_artist_view():
 def save_artist():
     if request.method == 'POST':
         create = ArtistCreation(request.form)
-        artist = create.createArtist()
-        
-        message = ""
+        message = create.saveArtist(create.createArtist())
         return render_template('addArtist.html',message = message)
     else:
         message = "Illegal Request method"
