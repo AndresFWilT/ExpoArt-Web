@@ -27,6 +27,11 @@ def add_artwork_view():
 def add_artist_view():
     return render_template('addArtist.html')
 
+# endpoint for addTechnic view
+@app.route('/addArtisticTechnic')
+def add_artistic_technic_view():
+    return render_template('addArtisticTechnic.html')
+
 # endpoint for comunication
 @app.route('/comunication')
 def module_communication():

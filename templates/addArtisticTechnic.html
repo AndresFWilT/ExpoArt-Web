@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+Agregar Tecnicas art&iacute;sticas
+{% endblock title %}
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+        <h1 class="text-uppercase"><b>Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+        <h3>Agregar tecnica artistica al sistema</h3>
+    </div>
+    <div class="card-body text-center form">
+        <form action="/publishArtwork" method="post">
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> <b> Titulo </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="title" type="text" name="title" class="normal"
+                        placeholder="Ingrese el titulo de la tecnica artistica" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Descripci&oacute;n </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="descripcion" type="text" name="descripcion" class="normal"
+                        placeholder="Ingrese la descripcion" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <button class="btn btn-success" type="submit">
+                        Agregar tecnica artistica
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+{% endblock content%}
