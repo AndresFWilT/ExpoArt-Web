@@ -23,8 +23,8 @@ def index():
 @app.route('/addArtwork')
 def add_artwork_view():
     artist = ""
-    artwork = ""
-    return render_template('addArtwork.html', artist = artist, artwork= artwork)
+    technic = ""
+    return render_template('addArtwork.html', artist = artist, technic= technic)
 
 # endpoint for addArtist view
 @app.route('/addArtist')
