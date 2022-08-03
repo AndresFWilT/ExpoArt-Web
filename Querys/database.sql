@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 9.x                               */
-/* Created on:     02/08/2022 10:17:47 p. m.                    */
+/* Created on:     02/08/2022 10:36:22 p. m.                    */
 /*==============================================================*/
 
 
@@ -55,10 +55,10 @@ drop table USERS;
 /*==============================================================*/
 create table ARTIST (
    ID_ARTIST            SERIAL               not null,
-   NAME_ARTIST          VARCHAR(1024)        null,
-   LASTNAME_ARTIST      VARCHAR(1024)        null,
-   EMAIL_ARTIST         VARCHAR(1024)        null,
-   PHONE                NUMERIC              null,
+   NAME_ARTIST          VARCHAR(1024)        not null,
+   LASTNAME_ARTIST      VARCHAR(1024)        not null,
+   EMAIL_ARTIST         VARCHAR(1024)        not null,
+   PHONE                NUMERIC              not null,
    constraint PK_ARTIST primary key (ID_ARTIST)
 );
 
@@ -74,8 +74,8 @@ ID_ARTIST
 /*==============================================================*/
 create table ARTISTIC_TECHNIC (
    ID_AT                SERIAL               not null,
-   TITLE                VARCHAR(1024)        null,
-   DESCRIPTION          VARCHAR(1024)        null,
+   TITLE                VARCHAR(1024)        not null,
+   DESCRIPTION          VARCHAR(1024)        not null,
    constraint PK_ARTISTIC_TECHNIC primary key (ID_AT)
 );
 
@@ -91,9 +91,10 @@ ID_AT
 /*==============================================================*/
 create table ARTWORK (
    ID_ARTWORK           SERIAL               not null,
-   TITLE_ARTWORK        VARCHAR(1024)        null,
-   DESCRIPTRION_ARTWORK VARCHAR(1024)        null,
-   DATE_PUBLISHED       DATE                 null,
+   TITLE_ARTWORK        VARCHAR(1024)        not null,
+   DESCRIPTRION_ARTWORK VARCHAR(1024)        not null,
+   DATE_PUBLISHED       DATE                 not null,
+   IMAGE                VARCHAR(1024)        not null,
    constraint PK_ARTWORK primary key (ID_ARTWORK)
 );
 
@@ -111,13 +112,15 @@ create table ARTWORK_ARTIST (
    ID_ARTWORKARTIST     SERIAL               not null,
    ID_ARTIST_FK         INT4                 not null,
    ID_ARTWORK_FK        INT4                 not null,
-   constraint PK_ARTWORK_ARTIST primary key (ID_ARTWORKARTIST)
+   constraint PK_ARTWORK_ARTIST primary key (ID_ARTIST_FK, ID_ARTWORK_FK, ID_ARTWORKARTIST)
 );
 
 /*==============================================================*/
 /* Index: ARTWORK_ARTIST_PK                                     */
 /*==============================================================*/
 create unique index ARTWORK_ARTIST_PK on ARTWORK_ARTIST (
+ID_ARTIST_FK,
+ID_ARTWORK_FK,
 ID_ARTWORKARTIST
 );
 
@@ -142,13 +145,15 @@ create table ARTWORK_TECHNIC (
    ID_ARTWORK_TECHNIC_PK SERIAL               not null,
    ID_AT_FK             INT4                 not null,
    ID_ARTWORK_FK        INT4                 not null,
-   constraint PK_ARTWORK_TECHNIC primary key (ID_ARTWORK_TECHNIC_PK)
+   constraint PK_ARTWORK_TECHNIC primary key (ID_AT_FK, ID_ARTWORK_FK, ID_ARTWORK_TECHNIC_PK)
 );
 
 /*==============================================================*/
 /* Index: ARTWORK_TECHNIC_PK                                    */
 /*==============================================================*/
 create unique index ARTWORK_TECHNIC_PK on ARTWORK_TECHNIC (
+ID_AT_FK,
+ID_ARTWORK_FK,
 ID_ARTWORK_TECHNIC_PK
 );
 
@@ -171,7 +176,7 @@ ID_AT_FK
 /*==============================================================*/
 create table DOCTYPE (
    ID_DOC               SERIAL               not null,
-   TYPE_DOC             TEXT                 null,
+   TYPE_DOC             TEXT                 not null,
    constraint PK_DOCTYPE primary key (ID_DOC)
 );
 
@@ -187,11 +192,11 @@ ID_DOC
 /*==============================================================*/
 create table RATING (
    ID_RATING            SERIAL               not null,
-   ID_USER              INT4                 null,
-   ID_ARTWORK           INT4                 null,
-   RATING               NUMERIC              null,
-   OPINION              VARCHAR(1024)        null,
-   DATE                 DATE                 null,
+   ID_USER              INT4                 not null,
+   ID_ARTWORK           INT4                 not null,
+   RATING               NUMERIC              not null,
+   OPINION              VARCHAR(1024)        not null,
+   DATE                 DATE                 not null,
    constraint PK_RATING primary key (ID_RATING)
 );
 
@@ -221,12 +226,12 @@ ID_ARTWORK
 /*==============================================================*/
 create table USERS (
    ID_USER              INT4                 not null,
-   ID_DOC               INT4                 null,
-   NAME_USER            VARCHAR(1024)        null,
-   LASTNAME_USER        VARCHAR(1024)        null,
-   PASSWORD             VARCHAR(1024)        null,
-   EMAIL_USER           VARCHAR(1024)        null,
-   TYPE                 VARCHAR(1024)        null,
+   ID_DOC               INT4                 not null,
+   NAME_USER            VARCHAR(1024)        not null,
+   LASTNAME_USER        VARCHAR(1024)        not null,
+   PASSWORD             VARCHAR(1024)        not null,
+   EMAIL_USER           VARCHAR(1024)        not null,
+   TYPE                 VARCHAR(1024)        not null,
    constraint PK_USERS primary key (ID_USER)
 );
 
