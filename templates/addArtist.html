@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+Agregar artistas
+{% endblock title %}
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+        <h1 class="text-uppercase"><b>Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+        <h3>Agregar artista al sistema</h3>
+    </div>
+    <div class="card-body text-center form">
+        <form action="/publishArtwork" method="post">
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> <b> Nombres </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="name" type="text" name="name" class="normal"
+                        placeholder="Ingrese el/los nombre/s" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Apellidos </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="surname" type="text" name="surname" class="normal"
+                        placeholder="Ingrese los apellidos" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Correo electr&oacute;nico </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="email" type="text" name="email" class="normal"
+                        placeholder="Ingrese el correo electronico del artista" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Telefono </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="phone" type="text" name="phone" class="normal"
+                        placeholder="Ingrese el numero de telefono del artista" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <button class="btn btn-success" type="submit">
+                        Registrar artista
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+{% endblock content%}

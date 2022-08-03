@@ -38,6 +38,7 @@ div.form{
 input.normal{
     width: 75%;
     margin:auto;
+    color: rgba(0, 0, 0, 0.65);
 }
 
 select.normal{
