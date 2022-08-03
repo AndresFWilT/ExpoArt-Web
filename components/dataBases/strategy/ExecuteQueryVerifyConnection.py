@@ -3,7 +3,7 @@ import psycopg2
 from components.dataBases.Connection import Connection
 from components.dataBases.strategy.ExecuteQuery import ExecuteQuery
 
-class ExecuteQuerySaveArtist(ExecuteQuery):
+class ExecuteQueryVerifyConnection(ExecuteQuery):
     # global
     __data = {}
 
@@ -28,7 +28,7 @@ class ExecuteQuerySaveArtist(ExecuteQuery):
             # displaying the select
             db_version = cur.fetchone()
             cur.close()
-            return db_version
+            return "Conexion exitosa "+str(db_version)
         except psycopg2.Error as error:
             print("something happened..."+error)
             return "Algo paso y no se puso realizar la transaccion.."

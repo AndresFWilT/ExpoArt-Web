@@ -37,7 +37,7 @@ class Operations():
         of implementing multiple versions of the algorithm on it's own
         """
         print("saving...")
-        self._executeQuery.save(self.data)
+        return self._executeQuery.save(self.data)
 
     def get(self) -> None:
         """

@@ -30,7 +30,6 @@ class Connection():
         # return JSON object as a dicctionary
         db = json.load(f)
         f.close
-        print(db)
         return db
 
     @property

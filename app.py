@@ -5,8 +5,9 @@ from jinja2 import Environment, FileSystemLoader
 import os
 app = Flask(__name__)
 
+# imports from modules
 from components.dataBases.context.Operations import Operations
-from components.dataBases.strategy.ExecuteQuerySaveArtist import ExecuteQuerySaveArtist
+from components.dataBases.strategy.ExecuteQueryVerifyConnection import ExecuteQueryVerifyConnection
 
 # endpoint for the app view
 @app.route('/')
@@ -40,10 +41,14 @@ def add_artistic_technic_view():
 def module_communication():
     return render_template('communication.html')
 
+# endpoint to verify dataBaseConnection
 @app.route('/dataBaseConnection')
 def prove_database_connection():
-    EQSA = Operations(ExecuteQuerySaveArtist(),{''})
-    message = EQSA.get()
+    # Parameters (strategy class, data)
+    EQSA = Operations(ExecuteQueryVerifyConnection(),{''})
+    # Data from the query executed
+    message = EQSA.save()
+    # rendering template
     return render_template('index.html',message = message)
 
 # app start
