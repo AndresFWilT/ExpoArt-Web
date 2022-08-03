@@ -6,9 +6,11 @@ import os
 app = Flask(__name__)
 
 # imports from modules
+## databases
 from components.dataBases.context.Operations import Operations
 from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryExecutionVerifyConnection
-
+## divulgation
+from components.divulgation.ArtistCreation import ArtistCreation
 # endpoint for the app view
 @app.route('/')
 def init():
@@ -22,6 +24,7 @@ def index():
 # endpoint for addArtwork view
 @app.route('/addArtwork')
 def add_artwork_view():
+
     artist = ""
     technic = ""
     return render_template('addArtwork.html', artist = artist, technic= technic)
@@ -30,6 +33,19 @@ def add_artwork_view():
 @app.route('/addArtist')
 def add_artist_view():
     return render_template('addArtist.html')
+
+# endpoint for saveArtist
+@app.route('/saveArtist', methods=['POST'])
+def save_artist():
+    if request.method == 'POST':
+        create = ArtistCreation(request.form)
+        artist = create.createArtist()
+        
+        message = ""
+        return render_template('addArtist.html',message = message)
+    else:
+        message = "Illegal Request method"
+        return render_template('addArtist.html',message = message)
 
 # endpoint for addTechnic view
 @app.route('/addArtisticTechnic')
