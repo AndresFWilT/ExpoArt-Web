@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # imports from modules
 from components.dataBases.context.Operations import Operations
-from components.dataBases.strategy.ExecuteQueryVerifyConnection import ExecuteQueryVerifyConnection
+from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryExecutionVerifyConnection
 
 # endpoint for the app view
 @app.route('/')
@@ -45,7 +45,7 @@ def module_communication():
 @app.route('/dataBaseConnection')
 def prove_database_connection():
     # Parameters (strategy class, data)
-    EQSA = Operations(ExecuteQueryVerifyConnection(),{''})
+    EQSA = Operations(QueryExecutionVerifyConnection(),{''})
     # Data from the query executed
     message = EQSA.save()
     # rendering template

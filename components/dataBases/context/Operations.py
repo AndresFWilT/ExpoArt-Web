@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC
-from components.dataBases.strategy.ExecuteQuery import ExecuteQuery
+from components.dataBases.strategy.QueryExecution import QueryExecution
 
 class Operations():
     # global
@@ -9,26 +9,26 @@ class Operations():
     The context that de fines the interface of interes to user
     """
 
-    def __init__(self, executeQuery: ExecuteQuery, data) -> None:
+    def __init__(self, queryExecution: QueryExecution, data) -> None:
         """
-        Strategy trough context (executeQuery, operation)
+        Strategy trough context (queryExecution, operation)
         """
-        self._executeQuery = executeQuery
+        self._queryExecution = queryExecution
         self.data = data
 
     @property
-    def executeQuery(self) -> executeQuery:
+    def queryExecution(self) -> queryExecution:
         """
         The context mantains a reference to one of the Strategy objects
         """
-        return self._executeQuery
+        return self._queryExecution
     
-    @executeQuery.setter
-    def executeQuery(self, executeQuery: ExecuteQuery) -> None:
+    @queryExecution.setter
+    def executeQuery(self, queryExecution: QueryExecution) -> None:
         """
         setter to replace a executeQuery object at runtime
         """
-        self._executeQuery = executeQuery
+        self._queryExecution = queryExecution
         
 
     def save(self) -> None:
@@ -37,7 +37,7 @@ class Operations():
         of implementing multiple versions of the algorithm on it's own
         """
         print("saving...")
-        return self._executeQuery.save(self.data)
+        return self._queryExecution.save(self.data)
 
     def get(self) -> None:
         """
@@ -45,7 +45,7 @@ class Operations():
         of implementing multiple versions of the algorithm on it's own
         """
         print("getting data...")
-        return self._executeQuery.get(self.data)
+        return self._queryExecution.get(self.data)
 
     ## global variables getter / setter
     @property

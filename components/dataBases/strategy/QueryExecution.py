@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class ExecuteQuery(ABC):
+class QueryExecution(ABC):
     """
     Interface that declares the methods to all suported versions
     of the executeQuery context

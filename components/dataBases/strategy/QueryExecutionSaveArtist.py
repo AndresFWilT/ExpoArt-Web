@@ -1,9 +1,9 @@
 # imports
 import psycopg2
 from components.dataBases.Connection import Connection
-from components.dataBases.strategy.ExecuteQuery import ExecuteQuery
+from components.dataBases.strategy.QueryExecution import QueryExecution
 
-class ExecuteQuerySaveArtist(ExecuteQuery):
+class QueryExecutionSaveArtist(QueryExecution):
     # global
     __data = {}
 
