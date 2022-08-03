@@ -4,6 +4,11 @@
 Agregar Tecnicas art&iacute;sticas
 {% endblock title %}
 {% block content %}
+{% if message %}
+<div class="card-body btn-info">
+  <p class="text-center text-light">{{ message }}</p>
+</div>
+{% endif %}
 <div class="card text-center">
     <div class="card-header">
         <h1 class="text-uppercase"><b>Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
