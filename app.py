@@ -5,15 +5,22 @@ from jinja2 import Environment, FileSystemLoader
 import os
 app = Flask(__name__)
 
-# endpoint for the app
+# endpoint for the app view
 @app.route('/')
 def init():
     return index()
 
-# endpoint for index
+# endpoint for index view
 @app.route('/index')
 def index():
     return render_template('index.html')
+
+# endpoint for addArtwork view
+@app.route('/addArtwork')
+def add_artwork_view():
+    artist = ""
+    artwork = ""
+    return render_template('addArtwork.html', artist = artist, artwork= artwork)
 
 # endpoint for comunication
 @app.route('/comunication')

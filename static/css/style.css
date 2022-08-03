@@ -29,3 +29,18 @@ a.mainToogle{
     background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
     opacity: .8;
 }
+
+div.form{
+    width: 55rem; 
+    margin: auto;
+}
+
+input.normal{
+    width: 75%;
+    margin:auto;
+}
+
+select.normal{
+    width: 75%;
+    margin:auto;
+}
