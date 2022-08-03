@@ -32,10 +32,10 @@ def add_artist_view():
 def add_artistic_technic_view():
     return render_template('addArtisticTechnic.html')
 
-# endpoint for comunication
-@app.route('/comunication')
+# endpoint for communication
+@app.route('/communication')
 def module_communication():
-    return render_template('comunication.html')
+    return render_template('communication.html')
 
 # app start
 if __name__ == '__main__':
