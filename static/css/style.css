@@ -1,18 +1,22 @@
 nav.mainNavbar{
-    background: #fff159;
+    background: #8b1c1c;
 }
 
 a.main{
-    background:#2d3277;
-    color: #fff159;
+    background:#8b1c1c;
+    color: white;
+    font-size: 32px;
 }
 
 p.navText{
-    color: #2d3277;
+    color: white;
+    font-size:32px;
+    text-transform: uppercase;
 }
 
 a.mainToogle{
-    color: #2d3277;
+    color: white;
+    font-size: 32px;
 }
 
 .loader {
