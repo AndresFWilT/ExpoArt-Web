@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+Publicar obras
+{% endblock title %}
+{% block content %}
+{% if message %}
+<div class="card-body btn-info">
+  <p class="text-center text-light">{{ message }}</p>
+</div>
+{% endif %}
+<div class="card text-center">
+    <div class="card-header">
+        <h1 class="text-uppercase"><b>Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+        <h3>Agrega obras en el sistema y publicalas en la galeria virtual</h3>
+    </div>
+    <div class="card-body text-center form">
+        <form action="/publishArtwork" method="post" enctype="multipart/form-data">
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> <b> Titulo de la obra </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="title" type="text" name="title" class="normal"
+                        placeholder="Ingrese el titulo" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Descripci&oacute;n de la obra </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input style="text-align: center" id="description" type="text" name="description" class="normal"
+                        placeholder="Ingrese la descripcion" required />
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Artista </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <select class="browser-default custom-select text-center normal" name="artist">
+                        <option value="" disabled selected>Escoge una artista</option>
+                        {% for i in range(0,artist| length) %}      
+                            <option value="{{artist[i][2]}}, {{artist[i][1]}}"><b>{{artist[i][1]}}, {{artist[i][2]}}</b></option>
+                        {% endfor %}
+                    </select>
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Tecnica art&iacute;stica de la obra </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <select class="browser-default custom-select text-center normal" name="technic">
+                        <option value="" disabled selected>Escoge una tecnica art&iacute;stica</option>
+                        {% for i in range(0,technic| length) %}      
+                            <option value="{{technic[i][0]}}"><b>{{technic[i][0]}}</b></option>
+                        {% endfor %}
+                    </select>
+                </li>
+            </ul>
+            <ul class="list-group list-group-item-heading">
+                <li class="list-group-item">
+                    <label> Imagen </label>
+                </li>
+                <li class="list-group list-group-item">
+                    <input type="file" class="form-control-file btn btn-info normal" id="img" name="img"
+                        required />
+                    <p class="text-center text-muted">Se recomienda subir imagenes de 225px (ancho) * 250px (alto)
+                    <p>
+                </li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <button class="btn btn-success" type="submit">
+                        Publicar obra
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+{% endblock content%}
