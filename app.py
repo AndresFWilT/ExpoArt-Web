@@ -11,6 +11,18 @@ from components.dataBases.context.Operations import Operations
 from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryExecutionVerifyConnection
 ## divulgation
 from components.divulgation.ArtistCreation import ArtistCreation
+from components.divulgation.tableTemplateRender import tableTemplateRender
+
+
+## --------------------------- Endpoints for every module ------------------------------------
+
+# endpoint for CRUD view (MODULE registration, divulgation)
+@app.route('/crud')
+def crud_view():
+    return render_template('CRUDIndex.html')
+
+## --------------------------- Divulgation Module ---------------------------------------------
+
 # endpoint for the app view
 @app.route('/')
 def init():
@@ -24,7 +36,6 @@ def index():
 # endpoint for addArtwork view
 @app.route('/addArtwork')
 def add_artwork_view():
-
     artist = ""
     technic = ""
     return render_template('addArtwork.html', artist = artist, technic= technic)
@@ -34,26 +45,44 @@ def add_artwork_view():
 def add_artist_view():
     return render_template('addArtist.html')
 
+# endpoint for addTechnic view
+@app.route('/addArtisticTechnic')
+def add_artistic_technic_view():
+    return render_template('addArtisticTechnic.html')
+
 # endpoint for saveArtist
 @app.route('/saveArtist', methods=['POST'])
 def save_artist():
     if request.method == 'POST':
         create = ArtistCreation(request.form)
         message = create.saveArtist(create.createArtist())
-        return render_template('addArtist.html',message = message)
+        return render_template('index.html',message = message)
     else:
         message = "Illegal Request method"
-        return render_template('addArtist.html',message = message)
+        return render_template('index.html',message = message)
+        
 
-# endpoint for addTechnic view
-@app.route('/addArtisticTechnic')
-def add_artistic_technic_view():
-    return render_template('addArtisticTechnic.html')
+# endpoint for render template view tables (artist, artisticTechnic, artwork)
+@app.route('/viewDivulgationDataTables', methods=["POST"])
+def view_divulgation_data_tables():
+    if request.method == 'POST':
+        table_render = tableTemplateRender(request.form)
+        template, data = table_render.render_template()
+        message = ""
+        print(data)
+        return render_template(template, message = message, data = data)
+    else:
+        message = "Illegal Request method"
+        return render_template('index.html',message = message)
+
+## --------------------------- Communication Module --------------------------------------------
 
 # endpoint for communication
 @app.route('/communication')
 def module_communication():
     return render_template('communication.html')
+
+## --------------------------- DataBase Module -------------------------------------------------
 
 # endpoint to verify dataBaseConnection
 @app.route('/dataBaseConnection')
@@ -64,6 +93,8 @@ def prove_database_connection():
     message = EQSA.save()
     # rendering template
     return render_template('index.html',message = message)
+
+## -----------------------------------------------------------------------------------------------
 
 # app start
 if __name__ == '__main__':

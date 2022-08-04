@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+CRUD
+{% endblock title %}
+{% block content %}
+{% if message %}
+<div class="card-body btn-info">
+    <p class="text-center text-light">{{ message }}</p>
+</div>
+{% endif %}
+<div class="card text-center">
+    <div class="card-header">
+        <h1 class="text-uppercase"><b>Galeria virtual: Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+        <i><b>CRUD</b> de los distintos componentes del sistema</i>
+    </div>
+    </br>
+    <div class="card-body">
+        <h3 class="card card-subtitle text-uppercase"><b>Divulgaci&oacute;n</b></h3>
+        <div class="row text-center">
+            <div class="col-sm">
+                <div class="card mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title text-center display-4">Agregar</h5>
+                        <p class="card-text">Agrega artistas, obras y tecnicas art&iacute;sticas al sistema</p>
+                        <div class="btn-group text-center" role="group" aria-label="Basic example">
+                            <a href="./addArtist" class="btn btn-success text-center text-uppercase">ARTISTAS</a>
+                        </div>
+                        <div class="btn-group text-center" role="group" aria-label="Basic example">
+                            <a href="./addArtwork" class="btn btn-success text-center text-uppercase">OBRA</a>
+                        </div>
+                        <div class="btn-group text-center" role="group" aria-label="Basic example">
+                            <a href="./addArtisticTechnic" class="btn btn-success text-center text-uppercase">T&Eacute;CNICA</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title text-center display-4">Visualizar</h5>
+                        <p class="card-text">Visualiza los artistas, obras y tecnicas art&iacute;sticas al sistema</p>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <form action="/viewDivulgationDataTables" method="post">
+                                <input name="template" type="submit" class="btn btn-primary" id="template"
+                                    value="ARTISTAS" />
+                                <input name="template" type="submit" class="btn btn-primary" id="template" value="OBRAS" />
+                                <input name="template" type="submit" class="btn btn-primary" id="template"
+                                    value="TECNICAS" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}

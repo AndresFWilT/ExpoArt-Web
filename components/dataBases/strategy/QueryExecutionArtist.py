@@ -50,11 +50,12 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT version()')
+            cur.execute('SELECT * FROM artist')
             # displaying the select
-            db_version = cur.fetchone()
+            data = cur.fetchall()
             cur.close()
-            return db_version
+            conn.close()
+            return data
         except psycopg2.Error as error:
             print("something happened..."+error)
             return "Algo paso y no se puso realizar la transaccion.."
