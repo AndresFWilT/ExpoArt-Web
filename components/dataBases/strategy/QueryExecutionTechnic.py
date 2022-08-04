@@ -3,7 +3,7 @@ import psycopg2
 from components.dataBases.Connection import Connection
 from components.dataBases.strategy.QueryExecution import QueryExecution
 
-class QueryExecutionArtist(QueryExecution):
+class QueryExecutionTechnic(QueryExecution):
     # global
     __data = []
 
@@ -24,15 +24,15 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute(f"""INSERT INTO artist (name_artist,lastname_artist,email_artist,phone)
-             VALUES ('{data[0]}','{data[1]}','{data[2]}',{data[3]})""")
+            cur.execute(f"""INSERT INTO artistic_technic (title,description) 
+            VALUES ('{data[0]}','{data[1]}')""")
             # saving
             conn.commit()
             # closing cursor
             cur.close()
             # closing connection
             conn.close()
-            return "Artista guardado con exito"
+            return "Tecnica guardado con exito"
         except psycopg2.Error as error:
             print("something happened..."+error)
             return "Algo paso y no se puso realizar la transaccion.."
@@ -50,7 +50,7 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT * FROM artist')
+            cur.execute('SELECT * FROM artistic_technic')
             # displaying the select
             data = cur.fetchall()
             cur.close()
@@ -60,7 +60,7 @@ class QueryExecutionArtist(QueryExecution):
             print("something happened..."+error)
             return "Algo paso y no se puso realizar la transaccion.."
 
-    def get_names(self):
+    def get_titles(self):
         """
         Method that gets the data from the DB
         """
@@ -71,7 +71,7 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT id_artist, lastname_artist, name_artist FROM artist')
+            cur.execute('SELECT title FROM artistic_technic')
             # displaying the select
             data = cur.fetchall()
             cur.close()

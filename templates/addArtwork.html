@@ -42,7 +42,7 @@ Publicar obras
                     <select class="browser-default custom-select text-center normal" name="artist">
                         <option value="" disabled selected>Escoge una artista</option>
                         {% for i in range(0,artist| length) %}      
-                            <option value="{{artist[i][0]}}"><b>{{artist[i][0]}}</b></option>
+                            <option value="{{artist[i][2]}}, {{artist[i][1]}}"><b>{{artist[i][1]}}, {{artist[i][2]}}</b></option>
                         {% endfor %}
                     </select>
                 </li>

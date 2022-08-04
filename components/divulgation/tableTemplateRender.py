@@ -7,6 +7,7 @@ from components.divulgation.tableCommand.ArtworkTableViewCommand import ArtworkT
 # component Databases
 from components.dataBases.context.Operations import Operations
 from components.dataBases.strategy.QueryExecutionArtist import QueryExecutionArtist
+from components.dataBases.strategy.QueryExecutionTechnic import QueryExecutionTechnic
 class tableTemplateRender():
     """
     class that invokes the invoker to render succesfully the table views
@@ -42,6 +43,16 @@ class tableTemplateRender():
             print("renderizando tabla obras")
         elif (self.command['template'] == "TECNICAS"):
             print("renderizando tabla tecnicas")
+            print("obteniendo el template")
+            invoker = Invoker()
+            invoker.set_template(ArtisticTechnicTableViewCommand())
+            self.template = invoker.getting_template()
+            print("obteniendo datos")
+            # Parameters (strategy class, data)
+            execute_query = Operations(QueryExecutionTechnic(),"")
+            # Data from the query executed
+            self.data = execute_query.get()
+            return self.template, self.data
             
 
     # variable getters / setters

@@ -11,6 +11,7 @@ from components.dataBases.context.Operations import Operations
 from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryExecutionVerifyConnection
 ## divulgation
 from components.divulgation.ArtistCreation import ArtistCreation
+from components.divulgation.TechnicCreation import TechnicCreation
 from components.divulgation.tableTemplateRender import tableTemplateRender
 
 
@@ -36,8 +37,12 @@ def index():
 # endpoint for addArtwork view
 @app.route('/addArtwork')
 def add_artwork_view():
-    artist = ""
-    technic = ""
+    # names from artist
+    createArtist = ArtistCreation("")
+    artist = createArtist.getArtistNames()
+    # titles from technic
+    createTechnics = TechnicCreation("")
+    technic = createTechnics.getTechnicTitles()
     return render_template('addArtwork.html', artist = artist, technic= technic)
 
 # endpoint for addArtist view
@@ -61,6 +66,16 @@ def save_artist():
         message = "Illegal Request method"
         return render_template('index.html',message = message)
         
+# endpoint for saveArtisticTechnic
+@app.route('/saveArtisticTechnic', methods=['POST'])
+def save_artistic_technic():
+    if request.method == 'POST':
+        create = TechnicCreation(request.form)
+        message = create.saveTechnic(create.createTechnic())
+        return render_template('index.html',message = message)
+    else:
+        message = "Illegal Request method"
+        return render_template('index.html',message = message)
 
 # endpoint for render template view tables (artist, artisticTechnic, artwork)
 @app.route('/viewDivulgationDataTables', methods=["POST"])
