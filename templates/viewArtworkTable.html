@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+Tabla obras de arte
+{% endblock title %}
+{% block content %}
+{% if message %}
+<div class="card-body btn-info">
+  <p class="text-center text-light">{{ message }}</p>
+</div>
+{% endif %}
+<div class="card text-center">
+    <div class="card-header">
+      <h1 class="text-uppercase"><b>Galeria virtual: Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+      <i>visualiza la tabla de obras de arte</i>
+    </div>
+    <h4 class="text-center text-uppercase">Obras de arte registrados en el sistema</h4>
+    <table class="table table-bordered text-center">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th class ="text-center"> Id obra </th>
+                <th class ="text-center"> Titulo </th>
+                <th class ="text-center"> Descripci&oacute;n </th>
+                <th class ="text-center"> Fecha </th>
+                <th class ="text-center"> Imagen </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data %}
+                {% for dato in data %}
+                <tr>
+                    {% for value in dato %}
+                        <td>{{ value }}</td>                                                                            
+                    {% endfor %}
+                </tr
+                {% endfor %}>
+            {% else %}
+                <h3>No se encontraron artistas</h3>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content%}
