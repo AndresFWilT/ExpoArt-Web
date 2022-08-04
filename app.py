@@ -69,7 +69,6 @@ def view_divulgation_data_tables():
         table_render = tableTemplateRender(request.form)
         template, data = table_render.render_template()
         message = ""
-        print(data)
         return render_template(template, message = message, data = data)
     else:
         message = "Illegal Request method"
