@@ -34,7 +34,7 @@ class QueryExecutionTechnic(QueryExecution):
             conn.close()
             return "Tecnica guardado con exito"
         except psycopg2.Error as error:
-            print("something happened..."+error)
+            print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
     def get(self,data):
@@ -57,7 +57,7 @@ class QueryExecutionTechnic(QueryExecution):
             conn.close()
             return data
         except psycopg2.Error as error:
-            print("something happened..."+error)
+            print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
     def get_titles(self):
@@ -78,7 +78,28 @@ class QueryExecutionTechnic(QueryExecution):
             conn.close()
             return data
         except psycopg2.Error as error:
-            print("something happened..."+error)
+            print("something happened..."+str(error))
+            return "Algo paso y no se puso realizar la transaccion.."
+
+    def get_technic_by_title(self,technic):
+        """
+        Method that gets the data from the DB
+        """
+        # try catch, if it's an error with the query or with the connection
+        try:
+            # connecting DB
+            conn = self.__get_connection()
+            # create a cursor
+            cur = conn.cursor()
+            # executing query
+            cur.execute(f"""SELECT id_at FROM artistic_technic WHERE title LIKE '{technic['title']}'""")
+            # displaying the select
+            data = cur.fetchall()
+            cur.close()
+            conn.close()
+            return data
+        except psycopg2.Error as error:
+            print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
     def __get_connection(self):

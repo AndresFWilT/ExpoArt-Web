@@ -3,7 +3,7 @@ import psycopg2
 from components.dataBases.Connection import Connection
 from components.dataBases.strategy.QueryExecution import QueryExecution
 
-class QueryExecutionArtist(QueryExecution):
+class QueryExecutionArtwork(QueryExecution):
     # global
     __data = []
 
@@ -24,15 +24,15 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute(f"""INSERT INTO artist (name_artist,lastname_artist,email_artist,phone)
-             VALUES ('{data[0]}','{data[1]}','{data[2]}',{data[3]})""")
+            cur.execute(f"""INSERT INTO artwork (title_artwork, descriptrion_artwork,date_published,image)
+                             VALUES ('{data[0]}','{data[1]}',NOW(),'{data[3]}')""")
             # saving
             conn.commit()
             # closing cursor
             cur.close()
             # closing connection
             conn.close()
-            return "Artista guardado con exito"
+            return "Obra guardado con exito"
         except psycopg2.Error as error:
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
@@ -50,7 +50,7 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT * FROM artist')
+            cur.execute('SELECT * FROM artwork')
             # displaying the select
             data = cur.fetchall()
             cur.close()
@@ -60,7 +60,56 @@ class QueryExecutionArtist(QueryExecution):
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
-    def get_names(self):
+    def save_artwork_artist(self,artwork,artist):
+        """
+        Method that saves data into the DB
+        """
+        # try catch, if it's an error with the query or with the connection
+        try:
+            print(artwork)
+            # connecting DB
+            conn = self.__get_connection()
+            # create a cursor
+            cur = conn.cursor()
+            # executing query
+            cur.execute(f"""INSERT INTO artwork_artist (id_artist_fk,id_artwork_fk) 
+            VALUES ({artist},{artwork})""")
+            # saving
+            conn.commit()
+            # closing cursor
+            cur.close()
+            # closing connection
+            conn.close()
+            return "Obra-artista guardado con exito"
+        except psycopg2.Error as error:
+            print("something happened..."+str(error))
+            return "Algo paso y no se puso realizar la transaccion.."
+
+    def save_artwork_technic(self,artwork,technic):
+        """
+        Method that saves data into the DB
+        """
+        # try catch, if it's an error with the query or with the connection
+        try:
+            # connecting DB
+            conn = self.__get_connection()
+            # create a cursor
+            cur = conn.cursor()
+            # executing query
+            cur.execute(f"""INSERT INTO artwork_technic (id_at_fk,id_artwork_fk) 
+            VALUES ({technic},{artwork});""")
+            # saving
+            conn.commit()
+            # closing cursor
+            cur.close()
+            # closing connection
+            conn.close()
+            return "Obra-artista guardado con exito"
+        except psycopg2.Error as error:
+            print("something happened..."+str(error))
+            return "Algo paso y no se puso realizar la transaccion.."
+
+    def get_artwork_by_title(self,title):
         """
         Method that gets the data from the DB
         """
@@ -71,30 +120,9 @@ class QueryExecutionArtist(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT id_artist, lastname_artist, name_artist FROM artist')
+            cur.execute(f"""SELECT id_artwork FROM artwork WHERE title_artwork LIKE '{title}'""")
             # displaying the select
-            data = cur.fetchall()
-            cur.close()
-            conn.close()
-            return data
-        except psycopg2.Error as error:
-            print("something happened..."+str(error))
-            return "Algo paso y no se puso realizar la transaccion.."
-
-    def get_artist_by_name(self,artist):
-        """
-        Method that gets the data from the DB
-        """
-        # try catch, if it's an error with the query or with the connection
-        try:
-            # connecting DB
-            conn = self.__get_connection()
-            # create a cursor
-            cur = conn.cursor()
-            # executing query
-            cur.execute(f"""SELECT id_artist FROM artist WHERE name_artist LIKE '%{artist['name']}%' AND lastname_artist LIKE '%{artist['surname']}%'""")
-            # displaying the select
-            data = cur.fetchall()
+            data = cur.fetchone()
             cur.close()
             conn.close()
             return data

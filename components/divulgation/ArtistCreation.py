@@ -38,6 +38,12 @@ class ArtistCreation():
         # Data from the query executed
         return execute_query.get_names()
 
+    def getArtistbyName(self):
+        # Parameters (strategy class, data)
+        execute_query = QueryExecutionArtist()
+        # Data from the query executed
+        return execute_query.get_artist_by_name(self.data)
+
     @property
     def data(self):
         return self.__data

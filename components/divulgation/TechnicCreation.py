@@ -38,6 +38,12 @@ class TechnicCreation():
         # Data from the query executed
         return execute_query.get_titles()
 
+    def getTechnicbyTitle(self):
+        # Parameters (strategy class, data)
+        execute_query = QueryExecutionTechnic()
+        # Data from the query executed
+        return execute_query.get_technic_by_title(self.data)
+
     @property
     def data(self):
         return self.__data

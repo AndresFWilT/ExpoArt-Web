@@ -1,6 +1,8 @@
 # imports
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
+from components.divulgation.ArtworkCreation import ArtworkCreation
 from config import DevelopmentConfig
+from werkzeug.utils import secure_filename
 from jinja2 import Environment, FileSystemLoader
 import os
 app = Flask(__name__)
@@ -13,6 +15,10 @@ from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryEx
 from components.divulgation.ArtistCreation import ArtistCreation
 from components.divulgation.TechnicCreation import TechnicCreation
 from components.divulgation.tableTemplateRender import tableTemplateRender
+
+# global
+UPLOAD_FOLDER = '/static/images'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 ## --------------------------- Endpoints for every module ------------------------------------
@@ -54,6 +60,25 @@ def add_artist_view():
 @app.route('/addArtisticTechnic')
 def add_artistic_technic_view():
     return render_template('addArtisticTechnic.html')
+
+# endpoint for saveArtWork
+@app.route('/publishArtwork',methods=['POST'])
+def save_artwork():
+    if request.method == 'POST':
+        file = request.files['img']
+        if file and allowed_file(file.filename):
+            data = request.form.to_dict()
+            create = ArtworkCreation(data,file.filename)
+            message = create.save_all_tables_artwork(create.createArtwork())
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return render_template('index.html',message = message)
+        else:
+            message = "Tipo de archivo no permitido"
+            return render_template('index.html',message = message)
+    else:
+        message = "Illegal Request method"
+        return render_template('index.html',message = message)
 
 # endpoint for saveArtist
 @app.route('/saveArtist', methods=['POST'])
@@ -109,6 +134,11 @@ def prove_database_connection():
     return render_template('index.html',message = message)
 
 ## -----------------------------------------------------------------------------------------------
+
+#service for saving files
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # app start
 if __name__ == '__main__':
