@@ -1,4 +1,5 @@
 # imports
+from nntplib import ArticleInfo
 from queue import Empty
 from flask import Flask, render_template, request, redirect, url_for, flash
 from components.divulgation.ArtworkCreation import ArtworkCreation
@@ -43,7 +44,6 @@ def index(message):
     # create the gallery
     create_gallery = GalleryCreation('')
     gallery = create_gallery.create_gallery()
-    print(len(gallery[0]))
     if (gallery is None):
         message = "No hay obras registradas en el sistema"
         return render_template('index.html', message = message)
@@ -54,8 +54,10 @@ def index(message):
 @app.route('/visualizeArtwork', methods=['POST'])
 def visualize_artwork():
     if request.method == 'POST':
-        print(request.form['artwork'])
-        return render_template('index.html')
+        view_artwork = GalleryCreation(request.form['artwork'])
+        artwork_info = view_artwork.create_specific_artwork()
+        print(type(artwork_info))
+        return render_template('visualizeArtwork.html', artwork_info = artwork_info)
 
 # endpoint for addArtwork view
 @app.route('/addArtwork')

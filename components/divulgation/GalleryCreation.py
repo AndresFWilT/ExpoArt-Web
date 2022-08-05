@@ -24,7 +24,10 @@ class GalleryCreation():
         self.data = data
 
     def create_specific_artwork(self):
-        x = 1
+        execute_query = Operations(QueryExecutionGallery(),self.data)
+        # Data from the query executed
+        return execute_query.save()
+        
 
     def create_gallery(self):
         execute_query = Operations(QueryExecutionGallery(),"")
