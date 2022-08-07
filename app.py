@@ -1,4 +1,6 @@
 # imports
+from nntplib import ArticleInfo
+from queue import Empty
 from flask import Flask, render_template, request, redirect, url_for, flash
 from components.divulgation.ArtworkCreation import ArtworkCreation
 from config import DevelopmentConfig
@@ -15,6 +17,7 @@ from components.dataBases.strategy.QueryExecutionVerifyConnection import QueryEx
 from components.divulgation.ArtistCreation import ArtistCreation
 from components.divulgation.TechnicCreation import TechnicCreation
 from components.divulgation.tableTemplateRender import tableTemplateRender
+from components.divulgation.GalleryCreation import GalleryCreation
 
 # global
 UPLOAD_FOLDER = '/static/images'
@@ -33,12 +36,28 @@ def crud_view():
 # endpoint for the app view
 @app.route('/')
 def init():
-    return index()
+    return index("")
 
 # endpoint for index view
 @app.route('/index')
-def index():
-    return render_template('index.html')
+def index(message):
+    # create the gallery
+    create_gallery = GalleryCreation('')
+    gallery = create_gallery.create_gallery()
+    if (gallery is None):
+        message = "No hay obras registradas en el sistema"
+        return render_template('index.html', message = message)
+    else:
+        return render_template('index.html',gallery = gallery, message = message)
+
+# endpoint for view specific artwork
+@app.route('/visualizeArtwork', methods=['POST'])
+def visualize_artwork():
+    if request.method == 'POST':
+        view_artwork = GalleryCreation(request.form['artwork'])
+        artwork_info = view_artwork.create_specific_artwork()
+        print(type(artwork_info))
+        return render_template('visualizeArtwork.html', artwork_info = artwork_info)
 
 # endpoint for addArtwork view
 @app.route('/addArtwork')
@@ -68,17 +87,17 @@ def save_artwork():
         file = request.files['img']
         if file and allowed_file(file.filename):
             data = request.form.to_dict()
-            create = ArtworkCreation(data,file.filename)
+            create = ArtworkCreation(data,secure_filename(file.filename))
             message = create.save_all_tables_artwork(create.createArtwork())
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return render_template('index.html',message = message)
+            return index(message)
         else:
             message = "Tipo de archivo no permitido"
-            return render_template('index.html',message = message)
+            return index(message)
     else:
         message = "Illegal Request method"
-        return render_template('index.html',message = message)
+        return index(message)
 
 # endpoint for saveArtist
 @app.route('/saveArtist', methods=['POST'])
@@ -86,10 +105,10 @@ def save_artist():
     if request.method == 'POST':
         create = ArtistCreation(request.form)
         message = create.saveArtist(create.createArtist())
-        return render_template('index.html',message = message)
+        return index(message)
     else:
         message = "Illegal Request method"
-        return render_template('index.html',message = message)
+        return index(message)
         
 # endpoint for saveArtisticTechnic
 @app.route('/saveArtisticTechnic', methods=['POST'])
@@ -97,10 +116,10 @@ def save_artistic_technic():
     if request.method == 'POST':
         create = TechnicCreation(request.form)
         message = create.saveTechnic(create.createTechnic())
-        return render_template('index.html',message = message)
+        return index(message)
     else:
         message = "Illegal Request method"
-        return render_template('index.html',message = message)
+        return index(message)
 
 # endpoint for render template view tables (artist, artisticTechnic, artwork)
 @app.route('/viewDivulgationDataTables', methods=["POST"])
@@ -112,7 +131,7 @@ def view_divulgation_data_tables():
         return render_template(template, message = message, data = data)
     else:
         message = "Illegal Request method"
-        return render_template('index.html',message = message)
+        return index(message)
 
 ## --------------------------- Communication Module --------------------------------------------
 
@@ -131,7 +150,7 @@ def prove_database_connection():
     # Data from the query executed
     message = EQSA.save()
     # rendering template
-    return render_template('index.html',message = message)
+    return index(message)
 
 ## -----------------------------------------------------------------------------------------------
 
