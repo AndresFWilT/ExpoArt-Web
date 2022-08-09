@@ -25,7 +25,7 @@ from components.divulgation.TechnicCreation import TechnicCreation
 from components.divulgation.tableTemplateRender import tableTemplateRender
 from components.divulgation.GalleryCreation import GalleryCreation
 ##communication
-from components.comunicacion.ArtistCommunication import ArtistCreation
+from components.comunicacion.ArtistCommunication import ArtistCommunication
 
 
 # global
@@ -282,11 +282,11 @@ def profilePersonaExterna():
 ## --------------------------- Communication Module --------------------------------------------
 
 # endpoint for communication
-@app.route('/communication')#, methods=["POST"] 
+@app.route('/communication', methods=["POST"] )
 def module_communication():
-   # if request.method == 'POST':
-        #pru = request.form['artist']
-        #print (pru)
+    if request.method == 'POST':
+        art_cr = ArtistCommunication(request.form)
+        artist = art_cr.getArtistbyName()
 
     return render_template('communication.html')
 

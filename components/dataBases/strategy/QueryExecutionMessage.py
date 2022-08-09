@@ -24,8 +24,7 @@ class QueryExecutionMessage(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute(f"""INSERT INTO message (subject,sender,message)
-             VALUES ('{data[0]}','{data[1]}','{data[2]}')""")
+            cur.execute(f"""INSERT INTO message (subject,sender,message) VALUES ('{data[0]}','{data[1]}','{data[2]}')""")
             # saving
             conn.commit()
             # closing cursor
