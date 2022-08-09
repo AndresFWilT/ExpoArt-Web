@@ -10,11 +10,34 @@ Bienvenido
 </div>
 {% endif %}
 <div class="card text-center">
-    <div class="card-header">
-      <h1 class="text-uppercase"><b>Galeria virtual: Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
-      <i>visualiza las distintas obras publicadas por nuestros artistas</i>
+  <div class="card-header">
+    <h1 class="text-uppercase"><b>Galeria virtual: Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+    <i>visualiza las distintas obras publicadas por nuestros artistas</i>
+  </div>
+  <div class="jumbotron my-4">
+    <div class="container">
+      <!-- Page Features -->
+      <div class="row text-center">
+        {% for i in range(gallery| length) %}
+        <div class="height d-flex justify-content-center align-items-center">
+          <div class="card p-3">
+            <form action="/visualizeArtwork" method="POST">
+              <div class="d-flex justify-content-between align-items-center ">
+                <figure id="photo" title="{{gallery[i][0]}}" tooltip-dir="top">
+                  <img src="{{gallery[i][2]}}" width="250" height="250" />
+                </figure>
+              </div>
+              <hr class="line">
+              <h6 class="text-uppercase artist">{{gallery[i][4]}}</h6>
+              <p class="artistic_technic text-muted">{{gallery[i][3]}}</p>
+              <input type="hidden" value="{{gallery[i][1]}}" name="artwork" id="artwork" required></a>
+              <button class="btn btn-success button" type="submit">Ver Obra</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
-    
-
+  </div>
+</div>
 {% endblock content%}
-

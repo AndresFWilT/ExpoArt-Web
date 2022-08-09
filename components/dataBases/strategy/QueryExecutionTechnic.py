@@ -8,7 +8,7 @@ class QueryExecutionTechnic(QueryExecution):
     __data = []
 
     """
-    Concrete Strategy that implements the algorithms to save an artist
+    Concrete Strategy that implements the algorithms to save an artistic technics
     into the DB, following ExecuteQuery 
     """
     def save(self,data):
