@@ -1,10 +1,13 @@
 # imports
+from ensurepip import bootstrap
 from email import message
 from flask import Flask, render_template, request, redirect, url_for, flash, session 
 from flask_session import Session
 from components.divulgation.ArtworkCreation import ArtworkCreation
 from config import DevelopmentConfig
 from werkzeug.utils import secure_filename
+from flask_bootstrap import Bootstrap
+from flask_fontawesome import FontAwesome
 from jinja2 import Environment, FileSystemLoader
 import os
 import psycopg2 
@@ -14,7 +17,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
-
+bootstrap = Bootstrap(app)
+FontAwesome(app)
 
 
 # imports from modules
@@ -144,6 +148,54 @@ def view_divulgation_data_tables():
         message = "Illegal Request method"
         return index(message)
 
+## --------------------------- Error Handling ---------------------------------------------
+
+# endpoint for error404
+@app.errorhandler(404)
+def not_found(error):
+    """ Método para error 404 """
+    return render_template('errors/error404.html', error=error)
+
+# endpoint for error500
+@app.errorhandler(500)
+def not_found(error):
+    """ Método para error 500 """
+    return render_template('errors/error500.html', error=error)
+
+## --------------------------- Component Management ---------------------------------------------
+
+# endpoint for Modulo Comunicación
+@app.route('/ERROR_ModuloComunicacion_NoEncontrado')
+def ModuloComunicacion():
+    return render_template('errors/errorscomponents/errorcomunicationmodule.html')
+
+# endpoint for Modulo Database
+@app.route('/ERROR_ModuloDatabase_NoEncontrado')
+def ModuloDatabase():
+    return render_template('errors/errorscomponents/errordatabasemodule.html')
+
+# endpoint for Modulo Divulgación
+@app.route('/ERROR_ModuloDivulgacion_NoEncontrado')
+def ModuloDivulgacion():
+    return render_template('errors/errorscomponents/errordivulgationmodule.html')
+
+# endpoint for Modulo Opinion
+@app.route('/ERROR_ModuloOpinion_NoEncontrado')
+def ModuloOpinion():
+    return render_template('errors/errorscomponents/erroropinionmodule.html')
+
+# endpoint for Modulo Registro
+@app.route('/ERROR_ModuloRegistro_NoEncontrado')
+def ModuloRegistro():
+    return render_template('errors/errorscomponents/errorregistrationmodule.html')
+
+# endpoint for Modulo Usuarios UD
+@app.route('/ERROR_ModuloUsuariosUD_NoEncontrado')
+def ModuloUsuariosUD():
+    return render_template('errors/errorscomponents/errorUDusersmodule.html')
+
+
+
 ## --------------------------- Registration Module ---------------------------------------------
 
 DB_HOST = "localhost"
@@ -153,7 +205,11 @@ DB_PASS= "1234"
 
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
 
-# endpoint for index view
+## --------------------------- Beggining Role Management --------------------------------------------
+
+## -------------- Persona externa -------------- 
+
+# endpoint for index view Persona Externa
 @app.route('/vistaPersonaExterna')
 def vistaPersonaExterna():
     # Check if user is loggedin
@@ -163,6 +219,83 @@ def vistaPersonaExterna():
         return render_template('vistaPersonaExterna.html', id_user=session['id_user'])
     # User is not loggedin redirect to login page
     return index('message')
+
+
+## -------------- Estudiante y Docente UD -------------- 
+
+# endpoint for index view Estudiante y Docente UD
+
+
+@app.route('/vistaPersonaUD')
+def vistaPersonaUD():
+    # Check if user is loggedin
+    if 'loggedin' in session and (session['type'] == "Estudiante UD" or session['type'] == "Docente UD"):
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        s = "SELECT * FROM ideas"
+        cur.execute(s) # Execute the SQL
+        list_ideas = cur.fetchall()
+        return render_template('vistaPersonaUD.html', list_ideas = list_ideas)
+    elif 'loggedin' in session:
+    # User is not loggedin redirect to login page
+        return index("")
+    else:
+        return render_template('login.html')
+
+@app.route('/add_idea', methods=['POST'])
+def add_idea():
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    if request.method == 'POST':
+        ideas_title = request.form['ideas_title']
+        ideas_desc = request.form['ideas_desc']
+        ideas_phase = request.form['ideas_phase']
+        cur.execute("INSERT INTO ideas (ideas_title, ideas_desc, ideas_phase) VALUES (%s,%s,%s)", (ideas_title, ideas_desc, ideas_phase))
+        conn.commit()
+        flash('Idea agregada con exito')
+        return redirect(url_for('vistaPersonaUD'))
+
+@app.route('/edit/<id_ideas>', methods = ['POST', 'GET'])
+def get_employee(id_ideas):
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+   
+    cur.execute('SELECT * FROM ideas WHERE id_ideas = %s', (id_ideas))
+    data = cur.fetchall()
+    cur.close()
+    print(data[0])
+    return render_template('edit.html', ideas = data[0])
+ 
+@app.route('/update/<id_ideas>', methods=['POST'])
+def update_ideas(id_ideas):
+    if request.method == 'POST':
+        ideas_title = request.form['ideas_title']
+        ideas_desc = request.form['ideas_desc']
+        ideas_phase = request.form['ideas_phase']
+        
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute("""
+            UPDATE ideas
+            SET ideas_title = %s,
+                ideas_desc = %s,
+                ideas_phase = %s
+            WHERE id_ideas = %s
+        """, (ideas_title, ideas_desc, ideas_phase, id_ideas))
+        flash('Idea actualizada con exito!')
+        conn.commit()
+        return redirect(url_for('vistaPersonaUD'))
+ 
+@app.route('/delete/<string:id_ideas>', methods = ['POST','GET'])
+def delete_ideas(id_ideas):
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+   
+    cur.execute('DELETE FROM ideas WHERE id_ideas = {0}'.format(id_ideas))
+    conn.commit()
+    flash('Idea eliminada con exito!')
+    return redirect(url_for('vistaPersonaUD'))
+
+## -------------- ADMIN -------------- 
+
+
+
+## --------------------------- Finish Role Management --------------------------------------------
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -216,7 +349,7 @@ def login():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
    
     # Check if "id_user" and "password" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'id_user' in request.form and 'password' in request.form and 'type' in request.form:
+    if request.method == 'POST':
         id_user = request.form['id_user']
         password = request.form['password']
         type = request.form['type']
@@ -237,7 +370,7 @@ def login():
                 session['id_user'] = account['id_user']
                 session['type'] = account['type']
                 # Redirect to vista persona externa
-                return redirect(url_for('vistaPersonaExterna'))
+                return index("logueado")
             else:
                 # Account doesnt exist or username/password incorrect
                 flash('Documento o password invalido')
