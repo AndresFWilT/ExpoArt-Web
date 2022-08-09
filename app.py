@@ -157,7 +157,7 @@ def vistaPersonaExterna():
         # User is loggedin show them the home page
         return render_template('vistaPersonaExterna.html', id_user=session['id_user'])
     # User is not loggedin redirect to login page
-    return redirect(url_for('index'))
+    return index('message')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -253,7 +253,7 @@ def logoutPersonaExterna():
    session.pop('id_user', None)
    session.pop('type', None)
    # Redirect to login page
-   return redirect(url_for('index'))
+   return index('Se ha deslogeado con exito!')
 
 # endpoint for profile Persona Externa
 @app.route('/profilePersonaExterna')
