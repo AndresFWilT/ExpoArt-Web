@@ -1,7 +1,7 @@
 import os
 
 class Config(object):
-    SECRET_KEY = 'my_secret_key'
+    SECRET_KEY = 'expoartweb-arquitectura'
     UPLOAD_FOLDER = 'static\images'
 
 class DevelopmentConfig(Config):

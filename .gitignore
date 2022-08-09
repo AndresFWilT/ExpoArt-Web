@@ -6,3 +6,4 @@ venv/
 *png
 *gif
 *jpeg
+flask_session/
