@@ -18,4 +18,3 @@ INSERT INTO category(id_category, cat_name) VALUES (2, 'Dibujo');
 INSERT INTO category(id_category, cat_name) VALUES (3, 'Muestra Externa');
 INSERT INTO public.ideas(id_ideas, id_category_idfk, id_user_idfk, ideas_title, ideas_desc, is_public) VALUES (1, 1, 1111, 'El sol saliente', 'Esta obra tiene como objetivo recrear las sesaciones que generan cada mañana en los bogotanos los dias soleados', false);
 
-

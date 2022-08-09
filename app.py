@@ -1,6 +1,8 @@
 # imports
 from ensurepip import bootstrap
-from flask import Flask, render_template, request, redirect, url_for, flash, session, redirect
+from email import message
+from flask import Flask, render_template, request, redirect, url_for, flash, session 
+from flask_session import Session
 from components.divulgation.ArtworkCreation import ArtworkCreation
 from config import DevelopmentConfig
 from werkzeug.utils import secure_filename
@@ -17,7 +19,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 FontAwesome(app)
-app.secret_key = 'expoartweb-arquitectura'
 
 
 # imports from modules
@@ -29,6 +30,9 @@ from components.divulgation.ArtistCreation import ArtistCreation
 from components.divulgation.TechnicCreation import TechnicCreation
 from components.divulgation.tableTemplateRender import tableTemplateRender
 from components.divulgation.GalleryCreation import GalleryCreation
+##communication
+from components.comunicacion.ArtistCommunication import ArtistCommunication
+
 
 # global
 UPLOAD_FOLDER = '/static/images'
@@ -349,10 +353,9 @@ def login():
         id_user = request.form['id_user']
         password = request.form['password']
         type = request.form['type']
-        print(password)
  
         # Check if account exists using MySQL
-        cursor.execute('SELECT * FROM users WHERE id_user = %s', (id_user,))
+        cursor.execute(f"""SELECT * FROM users WHERE id_user = {id_user}""")
         # Fetch one record and return result
         account = cursor.fetchone()
  
@@ -413,9 +416,43 @@ def profilePersonaExterna():
 ## --------------------------- Communication Module --------------------------------------------
 
 # endpoint for communication
-@app.route('/communication')
+@app.route('/communication', methods=["POST"] )
 def module_communication():
-    return render_template('communication.html')
+    if not 'loggedin' in session:
+        message= "Debes iniciar sesión para enviar mensajes"
+        return render_template('login.html',message=message)
+    
+    elif request.method == 'POST' and session.get('id_user'):
+        
+        art_cr = ArtistCommunication(request.form)
+        id = art_cr.getArtistbyName()
+        print(id)
+        artist= art_cr.getArtistbyId(id)
+
+        user_cr = ArtistCommunication(session.get('id_user'))
+        #id = user_cr.getUserbyName()
+        user = user_cr.getUserbyId()
+        
+
+
+
+        return render_template('communication.html', artist= artist,user= user)
+
+# endpoint for communication
+@app.route('/sendMessage', methods=["POST"] )
+def module_sendMessage():
+    if not 'loggedin' in session:
+        message= "Debes iniciar sesión para enviar mensajes"
+        return render_template('login.html',message=message)
+    
+    elif request.method == 'POST' and session.get('id_user'):
+       
+        art_cr = ArtistCommunication(request.form)
+        message = art_cr.sendMessage(session.get('id_user'), app)
+         
+        return index(message)
+
+
 
 ## --------------------------- DataBase Module -------------------------------------------------
 
@@ -439,5 +476,7 @@ def allowed_file(filename):
 # app start
 if __name__ == '__main__':
     app.config.from_object(DevelopmentConfig)
+    app.config["SESSION_PERMANENT"]= False
+    app.config["SESSION_TYPE"]= "filesystem"
+    Session(app)
     app.run(debug=True)
-
