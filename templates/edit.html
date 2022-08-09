@@ -1,0 +1,25 @@
+{% extends "layoutUD.html" %}
+{% block body %}
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-body">
+        <form action="/update/{{ideas.id_ideas}}" method="POST">
+          <div class="form-group">
+            <input type="text" name="ideas_title" value="{{ideas.ideas_title}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="ideas_desc" value="{{ideas.ideas_desc}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="ideas_phase" value="{{ideas.ideas_phase}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
