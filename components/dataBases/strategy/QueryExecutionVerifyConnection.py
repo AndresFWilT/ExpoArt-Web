@@ -8,7 +8,7 @@ class QueryExecutionVerifyConnection(QueryExecution):
     __data = {}
 
     """
-    Concrete Strategy that implements the algorithms to save an artist
+    Concrete Strategy that implements the algorithms to verify connection
     into the DB, following ExecuteQuery 
     """
     def save(self,data):
@@ -35,7 +35,7 @@ class QueryExecutionVerifyConnection(QueryExecution):
 
     def get(self,data):
         """
-        Method that gets the data from the DB
+        Method that gets the data from the DB (return select)
         """
         # getting the data from the template
         self.data = data

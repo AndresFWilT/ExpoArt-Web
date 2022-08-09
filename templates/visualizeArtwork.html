@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+{{ super() }}
+Bienvenido
+{% endblock title %}
+{% block content %}
+{% if message %}
+<div class="card-body btn-info">
+    <p class="text-center text-light">{{ message }}</p>
+</div>
+{% endif %}
+<div class="card text-center">
+    <div class="card-header">
+        <h1 class="text-uppercase"><b>Galeria virtual: Doctorado en estudios art&iacute;sticos UDFJC</b></h1>
+        <i>visualiza las distintas obras publicadas por nuestros artistas</i>
+    </div>
+    <div class="jumbotron my-4">
+        <div class="container">
+            <!-- Page Features -->
+            <div class="card p-12">
+                <form action="" method="POST">
+                    <h1>{{artwork_info[0][0]}}</h1>
+                    <hr class="line">
+                    <div class="n align-items-center ">
+                        <figure id="photo" title="{{artwork_info[0][0]}}" tooltip-dir="top">
+                            <img src="{{artwork_info[0][2]}}" width="750" height="750" />
+                        </figure>
+                    </div>
+                    <hr class="line">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <p><b>Artista: </b> {{artwork_info[0][7]}} {{artwork_info[0][6]}}</p>
+                            </div>
+                            <div class="col">
+                                <input type="hidden" value="{{artwork_info[0][7]}}, {{artwork_info[0][6]}}"
+                                    name="artwork" id="artwork" required></a>
+                                <button class="btn btn-primary button" type="submit"><i class="bi bi-mailbox2"></i>
+                                    Comunicarse con el artista</button>
+                            </div>
+                        </div>
+                        <p>{{artwork_info[0][4]}}</p>
+                        <p><i>T&eacute;cnica utilizada:</i> {{artwork_info[0][5]}}</p>
+                        <p class=" text-muted text-justify">{{artwork_info[0][3]}}</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}
