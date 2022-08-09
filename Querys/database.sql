@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 9.x                               */
-/* Created on:     02/08/2022 10:36:22 p. m.                    */
+/* Created on:     08/08/2022 10:56:30 p. m.                    */
 /*==============================================================*/
 
 
@@ -32,9 +32,29 @@ drop index ARTWORK_TECHNIC_PK;
 
 drop table ARTWORK_TECHNIC;
 
+drop index CATEGORY_PK;
+
+drop table CATEGORY;
+
 drop index DOCTYPE_PK;
 
 drop table DOCTYPE;
+
+drop index RELATIONSHIP_10_FK;
+
+drop index RELATIONSHIP_9_FK;
+
+drop index IDEAS_PK;
+
+drop table IDEAS;
+
+drop index RELATIONSHIP_8_FK;
+
+drop index RELATIONSHIP_7_FK2;
+
+drop index MESSAGE_PK;
+
+drop table MESSAGE;
 
 drop index RELATIONSHIP_3_FK;
 
@@ -172,6 +192,22 @@ ID_AT_FK
 );
 
 /*==============================================================*/
+/* Table: CATEGORY                                              */
+/*==============================================================*/
+create table CATEGORY (
+   ID_CATEGORY          SERIAL               not null,
+   CAT_NAME             VARCHAR(1024)        not null,
+   constraint PK_CATEGORY primary key (ID_CATEGORY)
+);
+
+/*==============================================================*/
+/* Index: CATEGORY_PK                                           */
+/*==============================================================*/
+create unique index CATEGORY_PK on CATEGORY (
+ID_CATEGORY
+);
+
+/*==============================================================*/
 /* Table: DOCTYPE                                               */
 /*==============================================================*/
 create table DOCTYPE (
@@ -185,6 +221,73 @@ create table DOCTYPE (
 /*==============================================================*/
 create unique index DOCTYPE_PK on DOCTYPE (
 ID_DOC
+);
+
+/*==============================================================*/
+/* Table: IDEAS                                                 */
+/*==============================================================*/
+create table IDEAS (
+   ID_IDEAS             SERIAL               not null,
+   ID_CATEGORY_IDFK     INT4                 null,
+   ID_USER_IDFK         INT4                 null,
+   IDEAS_TITLE          VARCHAR(1024)        not null,
+   IDEAS_DESC           VARCHAR(1024)        not null,
+   IS_PUBLIC            BOOL                 not null,
+   constraint PK_IDEAS primary key (ID_IDEAS)
+);
+
+/*==============================================================*/
+/* Index: IDEAS_PK                                              */
+/*==============================================================*/
+create unique index IDEAS_PK on IDEAS (
+ID_IDEAS
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_9_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_9_FK on IDEAS (
+ID_CATEGORY_IDFK
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_10_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_10_FK on IDEAS (
+ID_USER_IDFK
+);
+
+/*==============================================================*/
+/* Table: MESSAGE                                               */
+/*==============================================================*/
+create table MESSAGE (
+   ID_MESSAGE           SERIAL               not null,
+   ID_ARTIST_MESS_FK    INT4                 null,
+   ID_USER_MESS_FK      INT4                 null,
+   SUBJECT              VARCHAR(1024)        not null,
+   MESSAGE              VARCHAR(1024)        not null,
+   constraint PK_MESSAGE primary key (ID_MESSAGE)
+);
+
+/*==============================================================*/
+/* Index: MESSAGE_PK                                            */
+/*==============================================================*/
+create unique index MESSAGE_PK on MESSAGE (
+ID_MESSAGE
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_7_FK2                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_7_FK2 on MESSAGE (
+ID_ARTIST_MESS_FK
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_8_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_8_FK on MESSAGE (
+ID_USER_MESS_FK
 );
 
 /*==============================================================*/
@@ -260,13 +363,33 @@ alter table ARTWORK_ARTIST
       on delete restrict on update restrict;
 
 alter table ARTWORK_TECHNIC
+   add constraint FK_ARTWORK__RELATIONS_ARTWORK foreign key (ID_ARTWORK_FK)
+      references ARTWORK (ID_ARTWORK)
+      on delete restrict on update restrict;
+
+alter table ARTWORK_TECHNIC
    add constraint FK_ARTWORK__RELATIONS_ARTISTIC foreign key (ID_AT_FK)
       references ARTISTIC_TECHNIC (ID_AT)
       on delete restrict on update restrict;
 
-alter table ARTWORK_TECHNIC
-   add constraint FK_ARTWORK__RELATIONS_ARTWORK foreign key (ID_ARTWORK_FK)
-      references ARTWORK (ID_ARTWORK)
+alter table IDEAS
+   add constraint FK_IDEAS_RELATIONS_USERS foreign key (ID_USER_IDFK)
+      references USERS (ID_USER)
+      on delete restrict on update restrict;
+
+alter table IDEAS
+   add constraint FK_IDEAS_RELATIONS_CATEGORY foreign key (ID_CATEGORY_IDFK)
+      references CATEGORY (ID_CATEGORY)
+      on delete restrict on update restrict;
+
+alter table MESSAGE
+   add constraint FK_MESSAGE_RELATIONS_ARTIST foreign key (ID_ARTIST_MESS_FK)
+      references ARTIST (ID_ARTIST)
+      on delete restrict on update restrict;
+
+alter table MESSAGE
+   add constraint FK_MESSAGE_RELATIONS_USERS foreign key (ID_USER_MESS_FK)
+      references USERS (ID_USER)
       on delete restrict on update restrict;
 
 alter table RATING
