@@ -192,3 +192,8 @@ button.button{
     min-height: 100px;
     max-height: 200px;
 }
+
+i.icono_grande{
+    font-size: 64px;
+    color: #f3f3f3;
+}

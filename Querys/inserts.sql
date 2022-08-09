@@ -10,4 +10,3 @@ INSERT INTO artwork (title_artwork, descriptrion_artwork,date_published,image) V
 INSERT INTO artwork_artist (id_artist_fk,id_artwork_fk) VALUES (1,1);
 INSERT INTO artwork_technic (id_at_fk,id_artwork_fk) VALUES (1,1);
 
-

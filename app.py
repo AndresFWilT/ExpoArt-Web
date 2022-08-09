@@ -220,10 +220,9 @@ def login():
         id_user = request.form['id_user']
         password = request.form['password']
         type = request.form['type']
-        print(password)
  
         # Check if account exists using MySQL
-        cursor.execute('SELECT * FROM users WHERE id_user = %s', (id_user,))
+        cursor.execute(f"""SELECT * FROM users WHERE id_user = {id_user}""")
         # Fetch one record and return result
         account = cursor.fetchone()
  

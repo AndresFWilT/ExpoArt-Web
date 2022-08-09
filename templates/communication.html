@@ -11,49 +11,26 @@ Modulo comunicacion
 {% endif %}
 <div class="card text-center">
     <div class="artist_profile">
-        <img 
-            class="avatar"
-            src ="static/images/user/52233.jpg"
-         />
+        <i class="bi bi-person icono_grande"></i>
         <h1 class="user_name">
             {{artist[0][1]}}
         </h1>
     </div>
     <ul class="social">
         <li>
-            <img 
-            class="icon"
-            src ="static/images/user/facebook.png"
-            />
-            <a href="https://www.facebook.com">Facebook</a>
+            <a href="https://www.facebook.com"><i class="bi bi-facebook"></i> Facebook</a>
         </li>
         <li>
-            <img 
-            class="icon"
-            src ="static/images/user/twitter.png"
-            />
-            <a href="https://twitter.com/">Twitter</a>
+            <a href="https://twitter.com/"><i class="bi bi-twitter"></i> Twitter</a>
         </li>
         <li>
-            <img 
-            class="icon"
-            src ="static/images/user/instagram.png"
-            />
-            <a href="https://www.instagram.com/">instagram</a>
+            <a href="https://www.instagram.com/"><i class="bi bi-instagram"></i> instagram</a>
         </li>
         <li>
-            <img 
-            class="icon"
-            src ="static/images/user/gmail.jpg"
-            />
-            <a> {{artist[0][2]}}</a>
+            <a><i class="bi bi-mailbox"></i> {{artist[0][2]}}</a>
         </li>
         <li>
-            <img 
-            class="icon"
-            src ="static/images/user/phone.jpg"
-            />
-            <a> {{artist[0][3]}}</a>
+            <a><i class="bi bi-phone"></i> {{artist[0][3]}}</a>
         </li>
     </ul>
     <div class="about">
