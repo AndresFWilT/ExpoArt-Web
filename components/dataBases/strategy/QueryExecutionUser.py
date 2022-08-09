@@ -3,15 +3,11 @@ import psycopg2
 from components.dataBases.Connection import Connection
 from components.dataBases.strategy.QueryExecution import QueryExecution
 
-class QueryExecutionMessage(QueryExecution):
+class QueryExecutionUser(QueryExecution):
     # global
     __data = []
 
-    """
-    Concrete Strategy that implements the algorithms to save a message
-    into the DB, following ExecuteQuery 
-    """
-    def save(self,data,artist,user):
+    def save(self,data):
         """
         Method that saves data into the DB
         """
@@ -24,18 +20,19 @@ class QueryExecutionMessage(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute(f"""INSERT INTO message (id_artist_mess_fk,id_user_mess_fk,subject,message) VALUES ({artist[0][0]},{user},'{data['subject']}','{data['message']}')""")
+            cur.execute(f"""INSERT INTO artwork (title_artwork, descriptrion_artwork,date_published,image)
+                             VALUES ('{data[0]}','{data[1]}',NOW(),'{data[3]}')""")
             # saving
             conn.commit()
             # closing cursor
             cur.close()
             # closing connection
             conn.close()
-            return "Mensaje guardado con exito"
+            return "Obra guardado con exito"
         except psycopg2.Error as error:
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
-    
+
     def get(self,data):
         """
         Method that gets the data from the DB
@@ -49,7 +46,7 @@ class QueryExecutionMessage(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT * FROM message')
+            cur.execute('SELECT * FROM artwork')
             # displaying the select
             data = cur.fetchall()
             cur.close()
@@ -59,7 +56,31 @@ class QueryExecutionMessage(QueryExecution):
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
-    def get_names(self):
+
+    def get_user(self,data):
+        """
+        Method that gets the data from the DB
+        """
+        # getting the data from the template
+        self.data = data
+        # try catch, if it's an error with the query or with the connection
+        try:
+            # connecting DB
+            conn = self.__get_connection()
+            # create a cursor
+            cur = conn.cursor()
+            # executing query
+            cur.execute('SELECT * FROM users')
+            # displaying the select
+            data = cur.fetchall()
+            cur.close()
+            conn.close()
+            return data
+        except psycopg2.Error as error:
+            print("something happened..."+str(error))
+            return "Algo paso y no se puso realizar la transaccion.."
+
+    def get_user_by_name(self,user):
         """
         Method that gets the data from the DB
         """
@@ -70,7 +91,7 @@ class QueryExecutionMessage(QueryExecution):
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute('SELECT subject,sender,message FROM message')
+            cur.execute(f"""SELECT id_user FROM users WHERE name_user LIKE '%{user['name']}%' AND lastname_user LIKE '%{user['surname']}%'""")
             # displaying the select
             data = cur.fetchall()
             cur.close()
@@ -80,18 +101,19 @@ class QueryExecutionMessage(QueryExecution):
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
-    def get_artist_by_id_message(self,message):
+    def get_user_by_Id(self,id):
+        print(id)  
         """
         Method that gets the data from the DB
         """
         # try catch, if it's an error with the query or with the connection
-        try:
+        try:            
             # connecting DB
             conn = self.__get_connection()
             # create a cursor
             cur = conn.cursor()
             # executing query
-            cur.execute(f"""SELECT id_message FROM message WHERE sender LIKE '%{message['sender']}%'""")
+            cur.execute(f"""SELECT id_user, (name_user||' '||lastname_user), email_user FROM users WHERE id_user = {id}""")
             # displaying the select
             data = cur.fetchall()
             cur.close()

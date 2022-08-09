@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}
 {{ super() }}
-Tabla obras de arte
+Modulo comunicacion
 {% endblock title %}
 {% block content %}
 {% if message %}
@@ -16,7 +16,7 @@ Tabla obras de arte
             src ="static/images/user/52233.jpg"
          />
         <h1 class="user_name">
-            Nombre del Artista
+            {{artist[0][1]}}
         </h1>
     </div>
     <ul class="social">
@@ -41,6 +41,20 @@ Tabla obras de arte
             />
             <a href="https://www.instagram.com/">instagram</a>
         </li>
+        <li>
+            <img 
+            class="icon"
+            src ="static/images/user/gmail.jpg"
+            />
+            <a> {{artist[0][2]}}</a>
+        </li>
+        <li>
+            <img 
+            class="icon"
+            src ="static/images/user/phone.jpg"
+            />
+            <a> {{artist[0][3]}}</a>
+        </li>
     </ul>
     <div class="about">
         <h3>
@@ -48,45 +62,21 @@ Tabla obras de arte
             
         </h3>
         <p class="text-muted text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, recusandae. Illum accusantium tenetur quaerat iure quis doloribus aliquam, aspernatur sequi inventore id commodi doloremque eaque. Doloremque tenetur sed dicta ipsam?
+            Es un reconocido artista de Colombia, enfocado en el arte desde hace mucho tiempo.
         </p>
     </div>
 
     <div class="back_correo">
         <h1 class="user_name">Contactate con el Artista</h1>
-        <form class="form" action="">            
-            <input class="input-correo" id="correo" type="text" name="correo" placeholder="Correo">
-            <input class="input-correo" id="subject" type="text" name="asunto" placeholder="Asunto">
-            <textarea class="textarea" id="message_to_artist" name="mensajecorreo" placeholder="Escribe el mensaje ..."></textarea>
-            <input class="input-correo" id="bt_send_message"  type="button" value="ENVIAR" id="botoncorreo">
+        <form class="form" action="/sendMessage" method="POST">  
+            <input class="input-correo" id="subject" type="text" name="subject" placeholder="Asunto"> 
+            <input class="input-correo" id="artist" type="hidden" name="artist"value="{{artist[0][1]}}">        
+            <input class="input-correo" id="sender" type="text" name="sender" placeholder="{{user[0][2]}}" value="{{user[0][2]}}" > 
+            <input class="input-correo" id="receiver" type="text" name="receiver" placeholder="{{artist[0][2]}}" value="{{artist[0][2]}}" >
+            <textarea class="textarea" id="message" name="message" placeholder="Escribe el mensaje ..."></textarea>
+            <input class="input-correo" id="bt_correo"  type="submit" value="ENVIAR" >
         </form>
 
     </div>
-    <h4 class="text-center text-uppercase">Obras de arte registrados en el sistema</h4>
-    <table class="table table-bordered text-center">
-        <thead class="thead-dark text-center">
-            <tr>
-                <th class ="text-center"> Id artista </th>
-                <th class ="text-center"> Nombres </th>
-                <th class ="text-center"> Apellidos </th>
-                <th class ="text-center"> Email </th>
-                <th class ="text-center"> Telefono </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if data %}
-                {% for dato in data %}
-                <tr>
-                    {% for value in dato %}
-                        <td>{{ value }}</td>                                                                            
-                    {% endfor %}
-                </tr
-                {% endfor %}>
-            {% else %}
-                <h3>No se encontraron artistas</h3>
-            {% endif %}
-        </tbody>
-    </table>
 </div>
-
 {% endblock content%}

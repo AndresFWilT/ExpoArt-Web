@@ -102,6 +102,30 @@ class QueryExecutionArtist(QueryExecution):
             print("something happened..."+str(error))
             return "Algo paso y no se puso realizar la transaccion.."
 
+    def get_artist_by_Id(self,id):
+
+        """
+        Method that gets the data from the DB
+        """
+        # try catch, if it's an error with the query or with the connection
+        try:            
+            # connecting DB
+            conn = self.__get_connection()
+            # create a cursor
+            cur = conn.cursor()
+            # executing query
+            cur.execute(f"""SELECT id_artist, (name_artist||', '||lastname_artist), email_artist, phone FROM artist WHERE id_artist = {id}""")
+            # displaying the select
+            data = cur.fetchall()
+            cur.close()
+            conn.close()
+            return data
+        except psycopg2.Error as error:
+            print("something happened..."+str(error))
+            return "Algo paso y no se puso realizar la transaccion.."
+        
+   
+
     def __get_connection(self):
         c = Connection()
         return c.get_connection()

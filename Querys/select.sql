@@ -9,6 +9,8 @@ SELECT id_at FROM artistic_technic WHERE title = 'Escultura';
 SELECT id_artist, (lastname_artist||', '||name_artist) AS artist FROM artist;
 --              Artist id with name
 SELECT id_artist FROM artist WHERE name_artist='Sandro Javier' AND lastname_artist = 'Bolaños Castro';
+-- Artist by id 
+SELECT id_artist, (name_artist||' '||lastname_artist), email_artist, phone FROM artist WHERE id_artist = 1;
 
 -- Galery creation
 SELECT art.title_artwork, art.id_artwork, art.image, at.title, ar.name_artist||' '||ar.lastname_artist
