@@ -7,3 +7,4 @@ venv/
 *gif
 *jpeg
 flask_session/
+errors/
