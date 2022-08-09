@@ -136,8 +136,12 @@ def view_divulgation_data_tables():
 ## --------------------------- Communication Module --------------------------------------------
 
 # endpoint for communication
-@app.route('/communication')
+@app.route('/communication')#, methods=["POST"] 
 def module_communication():
+   # if request.method == 'POST':
+        #pru = request.form['artist']
+        #print (pru)
+
     return render_template('communication.html')
 
 ## --------------------------- DataBase Module -------------------------------------------------

@@ -32,12 +32,14 @@ Bienvenido
                             <div class="col">
                                 <p><b>Artista: </b> {{artwork_info[0][7]}} {{artwork_info[0][6]}}</p>
                             </div>
-                            <div class="col">
-                                <input type="hidden" value="{{artwork_info[0][7]}}, {{artwork_info[0][6]}}"
-                                    name="artwork" id="artwork" required></a>
-                                <button class="btn btn-primary button" type="submit"><i class="bi bi-mailbox2"></i>
-                                    Comunicarse con el artista</button>
-                            </div>
+                            <form method="POST" action="/communication">
+                                <div class="col">
+                                    <input type="hidden" value="{{artwork_info[0][7]}}, {{artwork_info[0][6]}}"
+                                        name="artist" id="artist" required></a>
+                                    <button class="btn btn-primary button" type="submit"><i class="bi bi-mailbox2"></i>
+                                    Comunicarse con el artista</button>                               
+                                </div>
+                           </form>
                         </div>
                         <p>{{artwork_info[0][4]}}</p>
                         <p><i>T&eacute;cnica utilizada:</i> {{artwork_info[0][5]}}</p>
